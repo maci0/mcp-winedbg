@@ -1,7 +1,7 @@
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
-from winedbg_wrapper import WineDbgWrapper
+from .winedbg_wrapper import WineDbgWrapper
 import uvicorn
 import os
 

@@ -18,13 +18,13 @@ This project provides a server that wraps the Wine Debugger (`winedbg`) and expo
 1.  Start the server:
 
     ```bash
-    python mcp_server.py
+    python -m src.mcp_server
     ```
 
 2.  Run the test client to see the server in action:
 
     ```bash
-    python test_client.py
+    python tests/test_client.py
     ```
 
 ## Testing with the Test App
@@ -34,7 +34,7 @@ This project includes a simple C application that can be used for testing the se
 1.  Compile the test application for 32-bit Windows:
 
     ```bash
-    i686-w64-mingw32-gcc -o test_app.exe test_app.c
+    i686-w64-mingw32-gcc -o tests/test_app.exe tests/test_app.c
     ```
 
     If you don't have the MinGW-w64 cross-compiler, you can install it on Debian/Ubuntu with:
@@ -43,7 +43,7 @@ This project includes a simple C application that can be used for testing the se
 2.  Run the test client:
 
     ```bash
-    python test_client.py
+    python tests/test_client.py
     ```
 
     The test client will automatically use the `test_app.exe` to test the server's functionality.
@@ -60,7 +60,7 @@ If you are using a client that supports launching MCP servers, you can configure
     "winedbg": {
       "command": "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-winedbg/.venv/bin/python",
       "args": [
-        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-winedbg/mcp_server.py"
+        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-winedbg/src/mcp_server.py"
       ]
     }
   }

@@ -5,7 +5,7 @@ import time
 
 def main():
     base_url = "http://127.0.0.1:8080"
-    test_app_path = '/home/mwysocki/mcp-winedbg/test_app.exe'
+    test_app_path = os.path.join(os.path.dirname(__file__), 'test_app.exe')
 
     if not os.path.exists(test_app_path):
         print(f"Test application not found at {test_app_path}")

@@ -1,63 +1,27 @@
-import subprocess
-import pty
-import os
-import select
-import threading
+import pexpect
 import shutil
 
 class WineDbgWrapper:
     def __init__(self):
         self.process = None
-        self.master_fd = None
-        self.slave_fd = None
-        self.thread = None
-        self.started = threading.Event()
         if not self.is_winedbg_installed():
             raise RuntimeError("winedbg is not installed. Please install it to use this wrapper.")
 
     def is_winedbg_installed(self):
         return shutil.which("winedbg") is not None
 
-    def _run_in_thread(self, command):
-        self.master_fd, self.slave_fd = pty.openpty()
-        self.process = subprocess.Popen(
-            command,
-            shell=True,
-            stdin=self.slave_fd,
-            stdout=self.slave_fd,
-            stderr=self.slave_fd,
-            close_fds=True
-        )
-        self.started.set()
-        self.process.wait()
-
     def start(self, command):
-        self.thread = threading.Thread(target=self._run_in_thread, args=(command,))
-        self.thread.start()
-        self.started.wait()
-        return self.read_output()
-
-    def read_output(self):
-        if not self.master_fd:
-            return ""
-        
-        output = ""
-        while True:
-            r, _, _ = select.select([self.master_fd], [], [], 0.1)
-            if not r:
-                break
-            data = os.read(self.master_fd, 1024)
-            if not data:
-                break
-            output += data.decode(errors='ignore')
-        return output
+        self.process = pexpect.spawn(command, encoding='utf-8')
+        self.process.expect(r'Wine-dbg>')
+        return self.process.before
 
     def send_command(self, command):
         if not self.process:
             return "winedbg not running."
         
-        os.write(self.master_fd, (command + '\n').encode())
-        return self.read_output()
+        self.process.sendline(command)
+        self.process.expect(r'Wine-dbg>')
+        return self.process.before
 
     def run(self, executable):
         return self.start(f"winedbg {executable}")
@@ -66,21 +30,10 @@ class WineDbgWrapper:
         return self.start(f"winedbg --pid {pid}")
 
     def quit(self):
-        response = self.send_command("quit")
         if self.process:
-            self.process.terminate()
-            self.process.wait()
+            self.process.close()
             self.process = None
-        if self.master_fd:
-            os.close(self.master_fd)
-            self.master_fd = None
-        if self.slave_fd:
-            os.close(self.slave_fd)
-            self.slave_fd = None
-        if self.thread:
-            self.thread.join()
-            self.thread = None
-        return response
+        return "winedbg terminated."
 
     def detach(self):
         return self.send_command("detach")
