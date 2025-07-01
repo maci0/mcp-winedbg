@@ -99,37 +99,3 @@ The server exposes the following tools:
 *   `info_share`: Get shared library info.
 *   `set_debug_channel`: Set the `WINEDEBUG` environment variable.
 *   `get_debug_channels`: Get the `WINEDEBUG` environment variable.
-
-
-## Available Tools
-
-The server exposes the following tools:
-
-*   `run`: Run an executable in `winedbg`.
-*   `attach`: Attach to a process.
-*   `quit`: Quit `winedbg`.
-*   `detach`: Detach from the process.
-*   `kill`: Kill the process.
-*   `cont`: Continue execution.
-*   `break_at`: Set a breakpoint.
-*   `watch`: Set a watchpoint.
-*   `info_break`: Get breakpoint info.
-*   `delete_breakpoint`: Delete a breakpoint.
-*   `backtrace`: Get a backtrace.
-*   `frame`: Select a stack frame.
-*   `up`: Move up the stack.
-*   `down`: Move down the stack.
-*   `step`: Step execution.
-*   `next`: Next execution.
-*   `stepi`: Step instruction.
-*   `nexti`: Next instruction.
-*   `finish`: Finish execution of the current function.
-*   `print_var`: Print a variable.
-*   `examine_memory`: Examine memory.
-*   `info_locals`: Get local variables.
-*   `info_args`: Get function arguments.
-*   `info_proc`: Get process info.
-*   `info_threads`: Get thread info.
-*   `info_share`: Get shared library info.
-*   `set_debug_channel`: Set the `WINEDEBUG` environment variable.
-*   `get_debug_channels`: Get the `WINEDEBUG` environment variable.
